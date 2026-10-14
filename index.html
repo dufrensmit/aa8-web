@@ -65,22 +65,7 @@ function subtrai(a, b) {
 console.log(calculadora(31, 12, soma));     // 43
 console.log(calculadora(11, 25, subtrai));  // -14</code></pre>
 
-    <script>
-        function calculadora(a, b, f) {
-            return f(a, b);
-        }
-
-        function soma(a, b) {
-            return a + b;
-        }
-
-        function subtrai(a, b) {
-            return a - b;
-        }
-
-        console.log(calculadora(31, 12, soma));
-        console.log(calculadora(11, 25, subtrai));
-    </script>
+    <p><strong>Resposta:</strong> a calculadora delega a operação para a função recebida. Os resultados são <code>43</code> e <code>-14</code>.</p>
 </div>
 
 <div class="questao">
@@ -93,6 +78,7 @@ console.log("Iniciei")
 setTimeout(callback, 5000);
 console.log("Estou após o setTimeout")
 </code></pre>
+    <p><strong>Resposta:</strong> primeiro aparecem <code>Iniciei</code> e <code>Estou após o setTimeout</code>, nessa ordem. Após aproximadamente 5 segundos, aparece <code>Estou na função de callback</code>. O temporizador agenda o callback e não bloqueia a execução seguinte.</p>
 </div>
 
 <div class="questao">
@@ -105,12 +91,21 @@ console.log("Olá")
 consoleAtrasado("Teste", 10000)
 console.log("Bye")
 </code></pre> 
+    <p><strong>Resposta:</strong> <code>Olá</code> é impresso primeiro. Ao chamar <code>consoleAtrasado</code>, <code>console.log("Teste")</code> é executado imediatamente e seu retorno (<code>undefined</code>) é passado para <code>setTimeout</code>. Isso não agenda a mensagem corretamente; dependendo do ambiente, a chamada inválida também pode gerar um erro e interromper o script antes de <code>Bye</code>.</p>
 </div>
 
 <div class="questao">
     <h2>Exercício 4. Correção de código</h2>
 
     <p>Corrija o código do exercício 3 para que a mensagem passada como parâmetro seja exibida no console apenas após o atraso.</p>
+    <pre><code class="language-javascript">function consoleAtrasado(mensagem, atraso) {
+    setTimeout(() => console.log(mensagem), atraso);
+}
+
+console.log("Olá");
+consoleAtrasado("Teste", 10000);
+console.log("Bye");</code></pre>
+    <p><strong>Resposta:</strong> a função deve receber uma função como primeiro argumento de <code>setTimeout</code>. A saída imediata é <code>Olá</code> e <code>Bye</code>; <code>Teste</code> aparece após 10 segundos.</p>
 </div>
 
 
@@ -136,6 +131,7 @@ olaETchau()
 </code></pre>
     
     <p>Como os códigos estão diferentes, eles pediram a sua opinião para dizer qual dos dois funciona. Qual deles está certo?</p>
+    <p><strong>Resposta:</strong> os dois estão corretos. Em ambos, <code>Olá</code> é impresso imediatamente e <code>Tchau</code> é agendado para cerca de 2 segundos depois. A ordem entre agendar o temporizador e imprimir <code>Olá</code> não muda esse resultado, pois a chamada síncrona ao <code>console.log</code> termina antes do callback do temporizador.</p>
 </div>
 
 <div class="questao">
@@ -146,6 +142,7 @@ for (let i = 0; i < 10; i++) {
     resolverEm1s.then(() => console.log("oi"))            
 }
 </code></pre>
+    <p><strong>Resposta:</strong> após aproximadamente 1 segundo, <code>oi</code> aparece dez vezes. Os dez callbacks estão registrados na mesma Promise e são executados quando ela é resolvida.</p>
 </div>
 
 <div class="questao">
@@ -156,6 +153,7 @@ for (let i = 0; i < 10; i++) {
     resolverEm1s.then(() => console.log(i))            
 }
 </code></pre>
+    <p><strong>Resposta:</strong> após aproximadamente 1 segundo, aparecem os números de <code>0</code> a <code>9</code>, em ordem. Como <code>i</code> foi declarado com <code>let</code> no cabeçalho do <code>for</code>, cada callback captura o valor da sua própria iteração.</p>
 </div>
 
 <div class="questao">
@@ -175,12 +173,25 @@ function p() {
 }        
 p()
 </code></pre>
+    <p><strong>Resposta:</strong> a função imprime <code>0</code>, <code>1</code>, …, <code>9</code>, com aproximadamente 1 segundo entre os números. Cada chamada recursiva só é iniciada depois que o temporizador anterior termina.</p>
 </div>
 
 <div class="questao">
     <h2>Exercício 9. Modificação de código</h2>
     <p>Modifique o código da questão 8 para usar async/await.</p>
+    <pre><code class="language-javascript">const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function contarComAsyncAwait() {
+    for (let i = 0; i &lt; 10; i++) {
+        await esperar(1000);
+        console.log(i);
+    }
+}
+
+contarComAsyncAwait();</code></pre>
+    <p><strong>Resposta:</strong> <code>await</code> pausa a continuação da função assíncrona até cada temporizador terminar, produzindo a mesma sequência de <code>0</code> a <code>9</code> com um segundo entre os valores.</p>
 </div>
 
+<script src="./js/exercicios.js"></script>
 </body>
 </html>
